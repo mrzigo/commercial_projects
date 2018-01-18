@@ -1,13 +1,13 @@
-= Commercial Projects
+# Commercial Projects
 Плагин(Модуль) для redmine, который отмечает часть проектов маркером. Данные загружаются по URL в json-формате
 
-### Установка
+## Установка
 ```
 $ cd ...redmine/plugins/
 $ git clone git@github.com:mrzigo/commercial_projects.git
 ```
 
-### Настройка
+## Настройка
 Авторизация в редмайн пользователем с правами адмнистратора, далее
 ```
 Меню -> Администрирование -> Модули -> Commercial Projects (Параметры)
@@ -17,6 +17,7 @@ your.redmine.host/settings/plugin/commercial_projects
 
 Обязательно указать URL и значение status поля, которое является основнаием для маркировки проектов.
 
+## Дополнительная информация
 пример формата json-файла
 ```
 {
