@@ -1,0 +1,56 @@
+<table width="100%">
+  <tbody>
+    <tr>
+      <th>Для каких ролей скрывать маркер</th>
+      <th>Маркер</th>
+    </tr>
+    <tr>
+      <td>
+        <%= select_tag("settings[roles]", options_from_collection_for_select(Role.all, :id, :name, settings[:roles]), { multiple: true, style: 'width: 100%; height: 200px;' }) %>
+        <em class="info">Отмеченые роли не будут видеть маркер</em>
+        <em class="info" style='color: red;'>Внимание! Отмеченные роли имеют наивысший приоритет!</em>
+      </td>
+
+      <td valign='top'>
+        <%= text_field_tag("settings[marker]", settings[:marker], :style => 'width: 100%;') %>
+        <em class="info">Это значение будет приписываться к наименованию проекта</em>
+      </td>
+
+    </tr>
+    <tr>
+      <td colspan=2>
+        <hr />
+         URL CRM:
+         <%= text_field_tag("settings[url]", settings[:url], :style => 'width: 100%;') %>
+         <em class="info">С этого адреса будем забирать данные по проектам</em>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=2>
+         Значение аттрибута 'status', которое считать "комерческий проект":
+         <%= number_field_tag("settings[code]", settings[:code], :style => 'width: 100%;') %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=2>
+         Период обновления по cron:
+         <%= `crontab -l | egrep -v "^#" | grep 'redmine:plugins:commercial_projects:download'`.to_s.slice(0,100) %>....
+         <em class="info">Базовый пример(каждый день в 0:00):</em>
+         <em class="info">0 0 * * * cd /home/zigo/work/projects/redmine/redmine && bundle exec rake -s redmine:plugins:commercial_projects:download RAILS_ENV="production"</em>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=2>
+        Текущие коммерческие проекты:
+        <em class="info">
+          <%= ::Project.where(:identifier => (settings[:project_ids] || [])).map{|p| p.name}.join(', ')  %>
+        </em>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=2>
+         Последнее обновление было: <%= settings[:last_download] || 'Никогда' %>
+      </td>
+    </tr>
+  </tbody>
+</table>
