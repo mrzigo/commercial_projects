@@ -1,4 +1,4 @@
-# Commercial Projects
+= Commercial Projects
 Плагин(Модуль) для redmine, который отмечает часть проектов маркером. Данные загружаются по URL в json-формате
 
 ## Установка
@@ -16,6 +16,12 @@ $ git clone git@github.com:mrzigo/commercial_projects.git
 your.redmine.host/settings/plugin/commercial_projects
 
 Обязательно указать URL и значение status поля, которое является основнаием для маркировки проектов.
+
+## Для загрузки данных нужно выполнять rake task:
+```
+bundle exec rake redmine:plugins:commercial_projects:download RAILS_ENV=production
+```
+Возможно команду необходимо добавить в crontab
 
 ## Дополнительная информация
 пример формата json-файла
