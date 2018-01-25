@@ -31,11 +31,11 @@ module CommercialProjects
         json = JSON.parse(response)
         code_status =  settings[:code].to_s.strip
 
-        settings[:project_ids] = json.map do |id, attributes|
-          if attributes['status'].to_s == code_status
-            ::Project.find_by_id(id).try(:identifier)
+        settings[:project_ids] = json.map do |project|
+          if project['type'].to_s != code_status
+            ::Project.find_by_id(project['id']).try(:identifier)
           end
-        end.compact
+        end.compact.uniq
 
         settings[:last_download] = Time.new.strftime('%d-%m-%Y %H:%M')
         Setting[:plugin_commercial_projects] = settings
