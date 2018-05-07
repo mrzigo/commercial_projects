@@ -21,6 +21,13 @@ Redmine::Plugin.register :commercial_projects do
     CONF_LAST => nil,                          # Когда был последний опрос
     CONF_PROJECT_IDS => [],                    # Проекты которые являются коммерческими (массив identifier)
   }
+
+  ActionDispatch::Callbacks.to_prepare do
+    require_dependency 'project'
+    require_dependency 'principal'
+    require_dependency 'user'
+    require_dependency 'commercial_projects/project_patch'
+  end
 end
 
 Rails.application.config.to_prepare do

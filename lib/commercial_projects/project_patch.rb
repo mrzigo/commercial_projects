@@ -1,7 +1,3 @@
-require_dependency 'project'
-require_dependency 'principal'
-require_dependency 'user'
-
 module CommercialProjects
   module ProjectPatch
     def self.included(base)
@@ -48,11 +44,11 @@ module CommercialProjects
       end
 
       def name_with_commercial_projects
-        @roles_commercial_projects ||= (Setting.plugin_commercial_projects[:roles] || []).map(&:to_i) || []
-        @projects_commercial_projects ||= Setting.plugin_commercial_projects[:project_ids] || []
-        my_roles_on_project = memberships.where(user_id: User.current.id).includes(:roles).pluck('roles.id')
+        @roles_commercial_projects ||= (Setting.plugin_commercial_projects[CONF_ROLES] || []).map(&:to_i) || []
+        @projects_commercial_projects ||= Setting.plugin_commercial_projects[CONF_PROJECT_IDS] || []
+        my_roles_on_project = memberships.where(user_id: User.current.id).includes(CONF_ROLES).pluck('roles.id')
         return self[:name] if (my_roles_on_project & @roles_commercial_projects).count > 0
-        @projects_commercial_projects.include?(identifier) ? "#{self[:name]} #{Setting.plugin_commercial_projects[:marker]}" : self[:name]
+        @projects_commercial_projects.include?(identifier) ? "#{self[:name]} #{Setting.plugin_commercial_projects[CONF_MARKER]}" : self[:name]
       end
     end
   end
