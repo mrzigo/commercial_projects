@@ -6,13 +6,13 @@
     </tr>
     <tr>
       <td>
-        <%= select_tag("settings[roles]", options_from_collection_for_select(Role.all, :id, :name, settings[:roles]), { multiple: true, style: 'width: 100%; height: 200px;' }) %>
+        <%= select_tag("settings[#{CONF_ROLES}]", options_from_collection_for_select(Role.all, :id, :name, settings[CONF_ROLES]), { multiple: true, style: 'width: 100%; height: 200px;' }) %>
         <em class="info">Отмеченые роли не будут видеть маркер</em>
         <em class="info" style='color: red;'>Внимание! Отмеченные роли имеют наивысший приоритет!</em>
       </td>
 
       <td valign='top'>
-        <%= text_field_tag("settings[marker]", settings[:marker], :style => 'width: 100%;') %>
+        <%= text_field_tag("settings[#{CONF_MARKER}]", settings[CONF_MARKER], :style => 'width: 100%;') %>
         <em class="info">Это значение будет приписываться к наименованию проекта</em>
       </td>
 
@@ -21,14 +21,14 @@
       <td colspan=2>
         <hr />
          URL CRM:
-         <%= text_field_tag("settings[url]", settings[:url], :style => 'width: 100%;') %>
+         <%= text_field_tag("settings[#{CONF_URL}]", settings[CONF_URL], :style => 'width: 100%;') %>
          <em class="info">С этого адреса будем забирать данные по проектам</em>
       </td>
     </tr>
     <tr>
       <td colspan=2>
          Значение аттрибута 'type', которое не является "комерческим проектом":
-         <%= number_field_tag("settings[code]", settings[:code], :style => 'width: 100%;') %>
+         <%= number_field_tag("settings[#{CONF_CODE}]", settings[CONF_CODE], :style => 'width: 100%;') %>
       </td>
     </tr>
     <tr>
@@ -43,13 +43,13 @@
       <td colspan=2>
         Текущие коммерческие проекты:
         <em class="info">
-          <%= ::Project.where(:identifier => (settings[:project_ids] || [])).map{|p| p.name}.join(', ')  %>
+          <%= ::Project.where(:identifier => (settings[CONF_PROJECT_IDS] || [])).map{|p| p.name}.join(', ')  %>
         </em>
       </td>
     </tr>
     <tr>
       <td colspan=2>
-         Последнее обновление было: <%= settings[:last_download] || 'Никогда' %>
+         Последнее обновление было: <%= settings[CONF_LAST] || 'Никогда' %>
       </td>
     </tr>
   </tbody>

@@ -16,7 +16,7 @@ module CommercialProjects
       def loading_commercial_projects
         settings = Setting[:plugin_commercial_projects]
 
-        url = settings[:url].strip
+        url = settings[CONF_URL].strip
         return if url.blank?
 
         begin
@@ -29,15 +29,15 @@ module CommercialProjects
         raise("Пустые данные с URL: ${url}") if response.to_s.strip.blank?
 
         json = JSON.parse(response)
-        code_status =  settings[:code].to_s.strip
+        code_status =  settings[CONF_CODE].to_s.strip
 
-        settings[:project_ids] = json.map do |project|
+        settings[CONF_PROJECT_IDS] = json.map do |project|
           if project['type'].to_s != code_status
             ::Project.find_by_id(project['id']).try(:identifier)
           end
         end.compact.uniq
 
-        settings[:last_download] = Time.new.strftime('%d-%m-%Y %H:%M')
+        settings[CONF_LAST] = Time.new.strftime('%d-%m-%Y %H:%M')
         Setting[:plugin_commercial_projects] = settings
       end
     end
