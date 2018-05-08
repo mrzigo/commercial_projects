@@ -29,7 +29,8 @@ module CommercialProjects
 
         settings[CONF_PROJECT_IDS] = json.map do |project|
           if project['type'].to_s != code_status
-            ::Project.find_by_id(project['id']).try(:identifier)
+            ::Project.where(settings[CONF_RM_ATTR] => project[settings[CONF_CRM_ATTR]]).first.try(:identifier)
+            # ::Project.find_by_id(project[settings[CONF_CRM_ATTR]]).try(:identifier)
           end
         end.compact.uniq
 

@@ -27,6 +27,22 @@
     </tr>
     <tr>
       <td colspan=2>
+        <hr />
+         Аттрибут на стороне CRM:
+         <%= text_field_tag("settings[#{CONF_CRM_ATTR}]", settings[CONF_CRM_ATTR], :style => 'width: 100%;') %>
+         <em class="info">default: redmine_id</em>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=2>
+        <hr />
+         Аттрибут на стороне redmine:
+         <%= text_field_tag("settings[#{CONF_RM_ATTR}]", settings[CONF_RM_ATTR], :style => 'width: 100%;') %>
+         <em class="info">default: id</em>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=2>
          Значение аттрибута 'type', которое не является "комерческим проектом":
          <%= number_field_tag("settings[#{CONF_CODE}]", settings[CONF_CODE], :style => 'width: 100%;') %>
       </td>

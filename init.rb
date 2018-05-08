@@ -1,4 +1,6 @@
 CONF_ROLES = 'roles'
+CONF_CRM_ATTR = 'crm_attr'
+CONF_RM_ATTR = 'rm_attr'
 CONF_MARKER = 'marker'
 CONF_URL = 'url'
 CONF_CODE = 'code'
@@ -20,6 +22,8 @@ Redmine::Plugin.register :commercial_projects do
     CONF_CODE => 1,                            # период забора данных в часах
     CONF_LAST => nil,                          # Когда был последний опрос
     CONF_PROJECT_IDS => [],                    # Проекты которые являются коммерческими (массив identifier)
+    CONF_CRM_ATTR => 'redmine_id',
+    CONF_RM_ATTR => 'id',
   }
 
   ActionDispatch::Callbacks.to_prepare do
