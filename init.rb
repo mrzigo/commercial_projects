@@ -11,7 +11,7 @@ Redmine::Plugin.register :commercial_projects do
   name 'Commercial Projects'
   author 'DigitalWand (mr.zigo@yandex.ru)'
   description 'Отображение информации о коммерческих проектах'
-  version '0.1'
+  version '0.2'
   url 'https://github.com/mrzigo/commercial_projects'
   author_url 'https://github.com/mrzigo'
 
