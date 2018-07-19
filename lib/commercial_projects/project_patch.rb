@@ -5,6 +5,7 @@ module CommercialProjects
       base.send(:include, InstanceMethods)
       base.class_eval do
         alias_method_chain :name, :commercial_projects
+        before_save :save_name_without_suffix
       end
     end
 
@@ -50,6 +51,11 @@ module CommercialProjects
         my_roles_on_project = memberships.where(user_id: User.current.id).includes(CONF_ROLES).pluck('roles.id')
         return self[:name] if (my_roles_on_project & @roles_commercial_projects).count > 0
         @projects_commercial_projects.include?(identifier) ? "#{self[:name]} #{Setting.plugin_commercial_projects[CONF_MARKER]}" : self[:name]
+      end
+
+      def save_name_without_suffix
+        self[:name].gsub!(Setting.plugin_commercial_projects[CONF_MARKER],'')
+        self[:name].strip!
       end
     end
   end
