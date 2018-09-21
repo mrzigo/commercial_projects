@@ -2,6 +2,7 @@
 Плагин(Модуль) для redmine, который отмечает часть проектов маркером. Данные загружаются по URL в json-формате
 
 ## Установка
+
 ```
 $ cd ...redmine/plugins/
 $ git clone git@github.com:mrzigo/commercial_projects.git
@@ -23,7 +24,7 @@ your.redmine.host/settings/plugin/commercial_projects
 ```
 bundle exec rake redmine:plugins:commercial_projects:download RAILS_ENV=production
 ```
-Возможно команду необходимо добавить в crontab
+Возможно команду необходимо добавить в crontab (На Ваше усмотрение)
 
 ## Дополнительная информация
 пример формата json-файла
@@ -38,8 +39,8 @@ bundle exec rake redmine:plugins:commercial_projects:download RAILS_ENV=producti
 }
 ```
 
-
 ## Удаление
+
 ```
 $ cd ...redmine/ && rake redmine:plugins:migrate NAME=commercial_projects VERSION=0 RAILS_ENV=production
 $ rm -rf ...redmine/plugins/commercial_projects
