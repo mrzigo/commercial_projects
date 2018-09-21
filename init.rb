@@ -5,7 +5,6 @@ CONF_MARKER = 'marker'
 CONF_URL = 'url'
 CONF_CODE = 'code'
 CONF_LAST = 'last_download'
-CONF_PROJECT_IDS = 'project_ids'
 
 Redmine::Plugin.register :commercial_projects do
   name 'Commercial Projects'
@@ -21,7 +20,6 @@ Redmine::Plugin.register :commercial_projects do
     CONF_URL => 'https://localhost:3000',      # Откуда дергаем данные
     CONF_CODE => 1,                            # период забора данных в часах
     CONF_LAST => nil,                          # Когда был последний опрос
-    CONF_PROJECT_IDS => [],                    # Проекты которые являются коммерческими (массив identifier)
     CONF_CRM_ATTR => 'redmine_id',
     CONF_RM_ATTR => 'id',
   }
@@ -31,9 +29,11 @@ Redmine::Plugin.register :commercial_projects do
     require_dependency 'principal'
     require_dependency 'user'
     require_dependency 'commercial_projects/project_patch'
+    require_dependency 'commercial_projects/query_patch'
   end
 end
 
 Rails.application.config.to_prepare do
   Project.send(:include, CommercialProjects::ProjectPatch)
+  Query.send(:include, CommercialProjects::QueryPatch)
 end

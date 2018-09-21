@@ -57,9 +57,12 @@
     </tr>
     <tr>
       <td colspan=2>
-        Текущие коммерческие проекты:
+        <%
+          projects = ::Project.commercial.map{|p| p.name}
+        %>
+        Текущие коммерческие проекты (<%=projects.count %> шт):
         <em class="info">
-          <%= ::Project.where(:identifier => (settings[CONF_PROJECT_IDS] || [])).map{|p| p.name}.join(', ')  %>
+          <%= projects.join(', ') %>
         </em>
       </td>
     </tr>

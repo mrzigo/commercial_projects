@@ -4,6 +4,10 @@ module CommercialProjects
       base.send(:extend, ClassMethods)
       base.send(:include, InstanceMethods)
       base.class_eval do
+        unloadable
+        scope :commercial, -> { where(:commercial => true) }
+        scope :not_commercial, -> { where.not(:commercial => true) }
+
         alias_method_chain :name, :commercial_projects
         before_save :save_name_without_suffix
       end
@@ -28,12 +32,18 @@ module CommercialProjects
         json = JSON.parse(response)
         code_status =  settings[CONF_CODE].to_s.strip
 
-        settings[CONF_PROJECT_IDS] = json.map do |project|
-          if project['type'].to_s != code_status
-            ::Project.where(settings[CONF_RM_ATTR] => project[settings[CONF_CRM_ATTR]]).first.try(:identifier)
-            # ::Project.find_by_id(project[settings[CONF_CRM_ATTR]]).try(:identifier)
+        json.each do |project_crm|
+          project = ::Project.where(settings[CONF_RM_ATTR] => project_crm[settings[CONF_CRM_ATTR]]).first
+          if project.present?
+            project.commercial = project_crm['type'].to_s != code_status
+            begin
+              project.save
+            rescue
+              puts "Ошибка сохранения в проекте ID=#{project.id} IDENTIFIER=#{project.identifier}"
+            end
           end
-        end.compact.uniq
+        end
+
 
         settings[CONF_LAST] = Time.new.strftime('%d-%m-%Y %H:%M')
         Setting[:plugin_commercial_projects] = settings
@@ -41,16 +51,21 @@ module CommercialProjects
     end
 
     module InstanceMethods
+
       def name
         self[:name]
       end
 
+      def commercial?
+        attributes.symbolize_keys[:commercial]
+      end
+
       def name_with_commercial_projects
         @roles_commercial_projects ||= (Setting.plugin_commercial_projects[CONF_ROLES] || []).map(&:to_i) || []
-        @projects_commercial_projects ||= Setting.plugin_commercial_projects[CONF_PROJECT_IDS] || []
         my_roles_on_project = memberships.where(user_id: User.current.id).includes(CONF_ROLES).pluck('roles.id')
         return self[:name] if (my_roles_on_project & @roles_commercial_projects).count > 0
-        @projects_commercial_projects.include?(identifier) ? "#{self[:name]} #{Setting.plugin_commercial_projects[CONF_MARKER]}" : self[:name]
+
+        commercial? ? "#{self[:name]} #{Setting.plugin_commercial_projects[CONF_MARKER]}" : self[:name]
       end
 
       def save_name_without_suffix

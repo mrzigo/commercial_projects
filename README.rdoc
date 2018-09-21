@@ -5,6 +5,8 @@
 ```
 $ cd ...redmine/plugins/
 $ git clone git@github.com:mrzigo/commercial_projects.git
+$ cd ...redmine/ && rake redmine:plugins:migrate RAILS_ENV=production
+# Перезапуск redmine
 ```
 
 ## Настройка
@@ -34,4 +36,12 @@ bundle exec rake redmine:plugins:commercial_projects:download RAILS_ENV=producti
     "status": "other"
   }
 }
+```
+
+
+## Удаление
+```
+$ cd ...redmine/ && rake redmine:plugins:migrate NAME=commercial_projects VERSION=0 RAILS_ENV=production
+$ rm -rf ...redmine/plugins/commercial_projects
+# Перезапуск redmine
 ```
