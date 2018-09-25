@@ -33,7 +33,7 @@ module CommercialProjects
           {
             :name => 'Коммерческий',
             :type => :list,
-            :values => [['Да', 1], ['Нет', 0]],
+            :values => [['Да', '1'], ['Нет', '0']],
           }
         )
         return @available_filters.merge!({"project.commercial" => filters})
